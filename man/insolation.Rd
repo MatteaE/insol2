@@ -137,14 +137,14 @@ contour(t(dem[nrow(dem):1,]),lwd=.5,col='sienna1',add=TRUE,levels=seq(0,2500,500
 contour(t(dem[nrow(dem):1,]),lwd=.25,col='sienna1',add=TRUE,levels=seq(0,2500,50),drawlabels=FALSE)
 
 \dontrun{
-## The same using raster
-require(raster)
+## The same using terra
+require(terra)
 demfile = tempfile()
 download.file("https://meteoexploration.com/R/insol/data/demlapalma.tif",demfile)
-dem = raster(demfile)
+dem = rast(demfile)
 plot(dem)
 cgr = cgrad(dem)
-demm = raster:::as.matrix(dem)
+demm = terra:::as.matrix(dem)
 dl = res(dem)[1]
 ## Isolation at 30 min interval over the length of the day
 ## RH and temp would cahnge over the dy, here we use a constant value for simplicity
@@ -175,8 +175,8 @@ for (srs in seq(dayl[1],dayl[2],deltat)){
 	Iglobal = Iglobal + (Idirdif[,1] * hsh + Idirdif[,2] )*3600*deltat
 }
 ## rasterize to plot nicely
-Iglobal = raster(Iglobal,crs=projection(dem))
-extent(Iglobal) = extent(dem)
+Iglobal = rast(Iglobal,crs=crs(dem))
+ext(Iglobal) = ext(dem)
 plot(Iglobal*1e-6,col=grey(1:100/100),
  	legend.args = list(text=expression(paste('Insolation MJ ',m^-2)), side=4,line=2.5))
 contour(dem,lwd = 0.5,col='sienna1',add=TRUE,levels=seq(0,2500,500))

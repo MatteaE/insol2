@@ -10,7 +10,7 @@ cgrad(dem, dlx, dly = dlx, cArea = FALSE)
 }
 \arguments{
   \item{dem}{
-Digital Elevation Model, either a matrix or a Raster Layer.
+Digital Elevation Model, either a matrix or a SpatRaster.
 }
   \item{dlx}{
 Resolution along X axis (longitude).
@@ -92,16 +92,16 @@ plot(slpg,grdarea)
 ## but in a DEM the slope of the grid cell depends on 4 points in 3D
 plot(tan(radians(slpg)),grdarea)
 
-## Use raster for better display and keep the dem projection
-require(raster)
+## Use terra for better display and keep the dem projection
+require(terra)
 demfile = tempfile()
 download.file("https://meteoexploration.com/R/insol/data/dempyrenees.tif",demfile)
-dem = raster(demfile)
+dem = rast(demfile)
 plot(dem)
 grd = cgrad(dem)
 grdarea = cgrad(dem,cArea=TRUE)
-rgrdarea = raster(grdarea,crs=projection(dem))
-extent(rgrdarea) = extent(dem)
+rgrdarea = rast(grdarea,crs=crs(dem))
+ext(rgrdarea) = ext(dem)
 plot(rgrdarea,col = grey(100:1/100))
 contour(dem,col='sienna1',lwd=.5,nlevels=30,add=TRUE)
 unlink(demfile)

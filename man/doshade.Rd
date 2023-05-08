@@ -2,7 +2,7 @@
 \alias{doshade}
 \title{ Cast shadows }
 \description{
-Calculates cast shadows over  matrix or Raster Layer DEM for a given illumination direction.
+Calculates cast shadows over  matrix or SpatRaster DEM for a given illumination direction.
 }
 \usage{
 doshade(dem, sv, dl = 0, sombra = dem)
@@ -10,16 +10,16 @@ doshade(dem, sv, dl = 0, sombra = dem)
 
 \arguments{
   \item{dem}{
-Digital elevation model, a matrix or RasterLayer representing terrain elevation on a regular grid.
+Digital elevation model, a matrix or SpatRaster representing terrain elevation on a regular grid.
 }
   \item{sv}{
 Unit vector in the direction of the sun.
 }
   \item{dl}{
-Grid spacing. Not needed if dem is a Raster Layer.
+Grid spacing. Not needed if dem is a SpatRaster.
 }
   \item{sombra}{
-Returned matrix or Raster Layer, no input needed for this argument.
+Returned matrix or SpatRaster, no input needed for this argument.
 }
 }
 \details{
@@ -29,7 +29,7 @@ whether they are in the sun or in the shadow of a previous cell.
 See Figure 6 of reference for more details.
 }
 \value{
-Return an object of the same class the the input dem (either a matrix o a Raster Layer), 
+Return an object of the same class the the input dem (either a matrix o a SpatRaster),
 with values 0 for shaded or 1 for not shaded.
 }
 \references{
@@ -85,12 +85,12 @@ hshsh = hsh*sh
 image(t(hshsh[nrow(sh):1,]),col=grey(1:100/100))
 
 
-## plot cast shadows on mountain terrain using raster
+## plot cast shadows on mountain terrain using terra
 sv = normalvector(65,315)
-require(raster)
+require(terra)
 demfile = tempfile()
 download.file("https://meteoexploration.com/R/insol/data/dempyrenees.tif",demfile)
-dem = raster(demfile)
+dem = rast(demfile)
 sh = doshade(dem,sv)
 plot(sh,col=grey(0:1),legend=FALSE)
 contour(dem,add=TRUE,col='sienna1',lwd=.5,nlevels=50)
@@ -102,8 +102,8 @@ hsh = grd[,,1]*sv[1]+grd[,,2]*sv[2]+grd[,,3]*sv[3]
 ## remove negative incidence angles (self shading) 
 hsh = (hsh+abs(hsh))/2
 ## convert back to raster as dem and add shadows
-hsh = raster(hsh,crs=projection(dem))
-extent(hsh) = extent(dem)
+hsh = rast(hsh,crs=crs(dem))
+ext(hsh) = ext(dem)
 sh = doshade(dem,sv)
 plot(hsh*sh,col=grey(1:100/100),legend=FALSE)
 unlink(demfile) 

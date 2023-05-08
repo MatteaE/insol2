@@ -1,6 +1,6 @@
-\name{insol-package}
-\alias{insol-package}
-\alias{insol}
+\name{insol2-package}
+\alias{insol2-package}
+\alias{insol2}
 \docType{package}
 \title{Solar Radiation}
 
@@ -11,19 +11,19 @@ the sun, vector normal to surface, and some atmospheric physics.}
 
 \details{
 \tabular{ll}{
-Package: \tab insol\cr
+Package: \tab insol2\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2019-01-16\cr
+Version: \tab 1.0.0\cr
+Date: \tab 2023-05-08\cr
 License: \tab GPL-2 \cr
 LazyLoad: \tab yes\cr
 }
 
 }
 \author{
-Javier G. Corripio
+Javier G. Corripio, Enrico Mattea
 
-Maintainer: Javier G. Corrripio <jgc@meteoexploration.com>
+Maintainer: Enrico Mattea <enrico.mattea@unifr.ch>
 
 Additional information: \url{https://meteoexploration.com/R/insol/}
 }

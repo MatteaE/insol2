@@ -1,18 +1,17 @@
-Package: insol
+Package: insol2
 Type: Package
 Title: Solar Radiation
-Version: 1.2.2
-Date: 2021-02-10
-Author: Javier G. Corripio
-Maintainer: Javier G. Corripio <jgc@meteoexploration.com>
+Version: 1.0.0
+Date: 2023-05-08
+Author: Javier G. Corripio, Enrico Mattea
+Maintainer: Enrico Mattea <enrico.mattea@unifr.ch>
 Depends: methods
-Imports: raster
+Imports: terra
 Suggests: datasets,graphics,rgl,stats
 Description: Functions to compute insolation on complex terrain.
 License: GPL-2
 URL: https://meteoexploration.com/R/insol/index.html
 LazyLoad: yes
-Packaged: 2021-02-10 14:46:46 UTC; root
+Packaged: 2023-05-08 10:46:46 UTC; root
 NeedsCompilation: yes
-Repository: CRAN
-Date/Publication: 2021-02-10 15:30:05 UTC
+Date/Publication: 2023-05-08 11:30:05 UTC

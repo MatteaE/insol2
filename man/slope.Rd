@@ -37,15 +37,15 @@ slopedem = slope(cgrad(dem,cellsize),degrees=TRUE)
 image(t(slopedem[nrow(slopedem):1,]),col=grey(100:1/100))
 
 
-## similar but using raster
+## similar but using terra
 \dontrun{
-require(raster)
+require(terra)
 demfile = tempfile()
 download.file("https://meteoexploration.com/R/insol/data/dempyrenees.tif",demfile)
-dem = raster(demfile)
+dem = rast(demfile)
 slopedem = slope(cgrad(dem),degrees=TRUE)
-slopedem = raster(slopedem,crs=projection(dem))
-extent(slopedem) = extent(dem)
+slopedem = rast(slopedem,crs=crs(dem))
+ext(slopedem) = ext(dem)
 plot(slopedem,col = grey(100:1/100))
 unlink(demfile)
 }

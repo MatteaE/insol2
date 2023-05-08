@@ -4,13 +4,13 @@ function(dem, dlx=0, dly=dlx, cArea=FALSE){
         cat("USAGE: cgrad(dem, dx, dly=dlx, cArea=FALSE) \n")
         return()
     }
-	if ("RasterLayer" %in% class(dem)) {
-		dlx = raster::res(dem)[1]
-		dly = raster::res(dem)[2]
-		dem = raster::as.matrix(dem)
+	if ("SpatRaster" %in% class(dem)) {
+		dlx = terra::res(dem)[1]
+		dly = terra::res(dem)[2]
+		dem = terra::as.matrix(dem)
 	}
 	if (dlx == 0){
-				cat("Input data is not a RasterLayer, then I need the DEM resolution dlx \n")
+				cat("Input data is not a SpatRaster, then I need the DEM resolution dlx \n")
 		return()
 		}
 	mm=as.matrix(dem)

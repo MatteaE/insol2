@@ -74,18 +74,18 @@ hshsh = hsh*sh
 image(t(hshsh[nrow(sh):1,]),col=grey(1:100/100))
 
 \dontrun{
-## Hillshading on mountain terrain, sun at NW, 45 degrees elevation. Using raster
+## Hillshading on mountain terrain, sun at NW, 45 degrees elevation. Using terra
 sv = normalvector(45,315)
-require(raster)
+require(terra)
 demfile = tempfile()
 download.file("https://meteoexploration.com/R/insol/data/dempyrenees.tif",demfile)
-dem = raster(demfile)
+dem = rast(demfile)
 grd = cgrad(dem)
 hsh = grd[,,1]*sv[1]+grd[,,2]*sv[2]+grd[,,3]*sv[3]
 ## remove negative incidence angles (self shading) 
 hsh = (hsh+abs(hsh))/2
-hsh = raster(hsh,crs=projection(dem))
-extent(hsh) = extent(dem)
+hsh = rast(hsh,crs=crs(dem))
+ext(hsh) = ext(dem)
 plot(hsh,col=grey(1:100/100),legend=FALSE)
 unlink(demfile)
 }

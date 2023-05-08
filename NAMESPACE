@@ -1,4 +1,4 @@
 import(methods)
-useDynLib(insol)
+useDynLib(insol2)
 exportPattern("^[^\\.]")
 

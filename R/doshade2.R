@@ -1,58 +1,16 @@
 #' Compute cast-shadow grid from a DEM and sun position
 #'
-#' Corrected, multi-threaded replacement for the package's original Fortran
-#' \code{doshade} routine. Casts an independent ray from every grid cell
-#' toward the sun (rather than only from grid-boundary cells, as the
-#' original algorithm did), which fixes a bug where adjacent cells could
-#' receive inconsistent shadow verdicts -- visible as periodic
-#' horizontal/vertical line artifacts, most noticeable at low/grazing solar
-#' elevation.
-#'
-#' This function is a drop-in replacement for the original: the call
-#' signature, argument order, \code{SpatRaster} support, and \code{NA}
-#' handling are unchanged. The only addition is the optional
-#' \code{max_threads_n} argument.
-#'
-#' @param dem A DEM, either a numeric matrix (\code{rows} x \code{cols}, R's
-#'   usual matrix orientation) or a \code{terra::SpatRaster}.
-#' @param sv Numeric vector of length 3: unit(-ish) vector pointing toward
-#'   the sun, \code{c(x, y, z)}.
-#' @param dl Grid cell size. Required if \code{dem} is a plain matrix;
-#'   ignored (taken from the raster's resolution instead) if \code{dem} is a
-#'   \code{SpatRaster}.
-#' @param sombra Unused; retained only for signature compatibility with the
-#'   original function.
-#' @param max_threads_n Integer. Maximum number of threads to use for the
-#'   computation. \code{0} (the default) auto-selects a sensible number
-#'   (logical cores minus one, at least 1). A positive value requests that
-#'   many threads, capped at (logical cores minus one). The thread count is
-#'   further capped automatically if the grid has fewer columns than the
-#'   requested/selected count, and is capped to 2 when running under
-#'   \code{R CMD check} regardless of this argument, per CRAN policy.
-#'
-#' @return If \code{dem} was a matrix: a numeric matrix of the same shape,
-#'   \code{1} = lit, \code{0} = shaded. Grid cells where the input \code{dem}
-#'   was \code{NA} are \code{NA} in the output (the original routine
-#'   computed a shading value for such cells using an internal -999
-#'   sentinel elevation and never actually restored \code{NA} in its output;
-#'   this version replaces the output with \code{NA} at those positions
-#'   instead, since callers are expected to pre-filter \code{NA} from their
-#'   DEM in practice and this makes the rare case unambiguous rather than
-#'   silently wrong). If \code{dem} was a \code{SpatRaster}: a
-#'   \code{SpatRaster} with the same CRS and extent.
-#'
-#' @examples
-#' \dontrun{
-#' dem <- matrix(rnorm(200 * 200, mean = 2000, sd = 200), nrow = 200, ncol = 200)
-#' sunvector <- c(0.55, 0.05, 0.12)
-#' shade <- doshade2(dem, sunvector, dl = 30)
-#'
-#' # SpatRaster input, using 4 threads:
-#' # shade_r <- doshade2(my_spatraster, sunvector, max_threads_n = 4)
-#' }
-#'
-#' @useDynLib insol2, .registration = TRUE
-#' @export
+## Corrected, multi-threaded replacement for the package's original Fortran
+## doshade routine. Casts an independent ray from every grid cell toward
+## the sun (rather than only from grid-boundary cells, as the original
+## algorithm did), which fixes a bug where adjacent cells could receive
+## inconsistent shadow verdicts -- visible as periodic horizontal/vertical
+## line artifacts, most noticeable at low/grazing solar elevation.
+##
+## Drop-in replacement for the original: call signature, argument order,
+## SpatRaster support, and NA handling are unchanged. The only addition is
+## the optional max_threads_n argument. See man/doshade.Rd for full
+## user-facing documentation.
 doshade2 <- function(dem, sv, dl = 0, sombra = dem, max_threads_n = 0L) {
     if (nargs() < 2) {
         cat("USAGE: doshade2(dem,sunvector,dl) \n")

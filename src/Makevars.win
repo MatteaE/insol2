@@ -1,0 +1,9 @@
+# src/Makevars.win
+#
+# Windows build flags (used by R when building via Rtools/MinGW-w64).
+# std::thread on MinGW-w64 needs winpthreads; modern Rtools toolchains
+# (Rtools40+) provide this and link it automatically in most configurations,
+# but we link -lpthread explicitly for safety across Rtools versions.
+
+CXX_STD = CXX11
+PKG_LIBS = -lpthread

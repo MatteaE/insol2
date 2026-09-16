@@ -1,0 +1,11 @@
+# src/Makevars
+#
+# Build flags for the doshade2 C++ core (doshade2_fixed.cpp) and its R .Call()
+# wrapper (doshade2_R.cpp). Requires C++11 (for std::thread) and pthread.
+# No OpenMP dependency -- this avoids the known gap where Apple's default
+# clang (shipped with Xcode Command Line Tools) has no OpenMP support at
+# all, which would otherwise make macOS builds silently single-threaded or
+# fail outright depending on toolchain.
+
+CXX_STD = CXX11
+PKG_LIBS = -lpthread

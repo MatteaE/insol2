@@ -38,13 +38,14 @@ perpendicular to the sun to determine whether they are in the sun or in the
 shadow of a previous cell along that ray. See Figure 6 of reference for
 more details.
 
-This implementation supersedes an earlier version that scanned the DEM in
+This function computes the same thing as \code{doshade}, but fixes an inaccuracy
+in that implementation: that function scans the DEM in
 lines parallel to the sun direction starting only from the grid boundary
 cells; that approach could, at low or grazing solar elevation, give
 neighbouring grid cells inconsistent shadow verdicts, visible as periodic
 horizontal or vertical line artifacts in the output. Casting a ray from
-every cell removes that inconsistency. The computation is multi-threaded
-(see \code{max_threads_n}) to offset the added cost of the per-cell
+every cell removes that inconsistency, however, performance is much slower. The computation is multi-threaded
+(see \code{max_threads_n}) to partially offset the added cost of the per-cell
 approach.
 }
 \value{
